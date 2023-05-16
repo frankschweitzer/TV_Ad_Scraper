@@ -13,11 +13,12 @@ import pandas as pd
 # soup = BeautifulSoup(html_content, 'html.parser')
 
 def main():
-    network = "A&E"
+    networks = ["A&E", "AMC", "ANML", "BBCA", "BET", "BHER", "BRVO", "CMT", "E!", "FX", "FXM", "FYI", "GOLF", "HGTV", "HIST", "ID", "IFC", "LMN", "MLB", "NGC", "OWN", "PAR", "POP", "SYFY", "TLC", "TNT", "TRVL", "USA", "VH1", "VICE"]
     
     desired_time = "12:15 PM"
     
-    map, times_each_day, dates = show_data(network) # returns map from dates to map of shwos and times
+    # need to make a loop, then this returns the map for each network and we can create another map from networks to this map
+    map, times_each_day, dates = show_data(networks[0]) # returns map from dates to map of shwos and times
     
     # cleaning up dates
     start_day = dates[0]
@@ -30,7 +31,7 @@ def main():
     count = 0
     # printing the show at the desired time for all of the dates
     for date in dates:
-        # print(date + ' ' + locate_show(times_each_day, desired_time, date, count, map))
+        print(date + ' ' + locate_show(times_each_day, desired_time, date, count, map))
         count+=1
     
     # reading the dates and times needed
@@ -38,7 +39,7 @@ def main():
     # data = read_file(name)
     
     # write all the shows and times to file
-    write_to_file(map, network)
+    # write_to_file(map, network)
     
 
 # extracting data needed from excel sheet
@@ -69,7 +70,7 @@ def locate_show(times, time_wanted, day, index, map):
     curr_times = times[index]
     time_wanted = datetime.strptime(time_wanted, '%I:%M %p').time()
     
-    start_time = None
+    start_time = None # might be helpful later on
     time_index = None
     
     for time in curr_times:
