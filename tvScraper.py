@@ -17,8 +17,11 @@ def main():
     
     desired_time = "12:15 PM"
     
+    network_to_map = {}
     # need to make a loop, then this returns the map for each network and we can create another map from networks to this map
     map, times_each_day, dates = show_data(networks[0]) # returns map from dates to map of shwos and times
+    network_to_map.update({networks[0]: map})
+    # print(network_to_map.get("A&E").get("Sunday, May 14").get("12:03 AM"))
     
     # cleaning up dates
     start_day = dates[0]
@@ -31,29 +34,30 @@ def main():
     count = 0
     # printing the show at the desired time for all of the dates
     for date in dates:
-        print(date + ' ' + locate_show(times_each_day, desired_time, date, count, map))
+        # print(date + ' ' + locate_show(times_each_day, desired_time, date, count, map))
         count+=1
     
     # reading the dates and times needed
-    # name = "SampleData.xlsx"
-    # data = read_file(name)
+    name = "SampleRedBullData.xlsx"
+    data = read_file(name)
     
     # write all the shows and times to file
     # write_to_file(map, network)
     
 
 # extracting data needed from excel sheet
-# def read_file(name):
-    # df = pd.read_excel(name, engine='openpyxl')
+def read_file(name):
+    df = pd.read_excel(name, engine='openpyxl')
     # colA = df['A'].tolist()
     # colB = df['B'].tolist()
-    # data = []
+    data = []
+    print(df)
     # for i in range(len(colA)):
     #     curr_list = []
     #     curr_list[0] = colA[i]
     #     curr_list[1] = colB[i]
     #     data.append(curr_list)
-    # return data
+    return data
     
     
 def list_dates(start, size):
