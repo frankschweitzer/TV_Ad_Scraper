@@ -53,7 +53,7 @@ def main():
             ind = (curr_date - start_date).days
             show_title = locate_show(times, curr[1], curr[0], ind, shows)
             current = []
-            date_object = datetime.strptime(curr[0], "%A, %B %d")
+            date_object = datetime.strptime((curr[0]+", 2023"), "%A, %B %d, %Y")
             formatted_date = date_object.strftime("%m/%d/%Y")
             current.append(formatted_date)
             current.append(curr[1])
@@ -138,6 +138,7 @@ def write_to_file(results):
     cell_E1.font = bold_font
     row_num = 2
     for result in results:
+        print(result)
         sheet[f"A{row_num}"] = "Red Bull"
         sheet[f"B{row_num}"] = result[0] # insert day
         sheet[f"C{row_num}"] = result[1] # insert time
