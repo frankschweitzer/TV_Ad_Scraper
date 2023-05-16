@@ -40,7 +40,7 @@ def main():
     # reading the dates and times needed
     name = "SampleRedBullData.xlsx"
     data = read_file(name)
-    
+    print(data[0])
     # write all the shows and times to file
     # write_to_file(map, network)
     
@@ -48,15 +48,18 @@ def main():
 # extracting data needed from excel sheet
 def read_file(name):
     df = pd.read_excel(name, engine='openpyxl')
-    # colA = df['A'].tolist()
-    # colB = df['B'].tolist()
+    dates = df['Date'].tolist()
+    times = df['Scheduled Time'].tolist()
+    networks = df['Network'].tolist()
+    
     data = []
-    print(df)
-    # for i in range(len(colA)):
-    #     curr_list = []
-    #     curr_list[0] = colA[i]
-    #     curr_list[1] = colB[i]
-    #     data.append(curr_list)
+    for i in range(len(dates)):
+        curr_list = []
+        curr_list.append(dates[i]) # match the dates to mine
+        curr_list.append(times[i][0:4]+times[i][-3:])
+        curr_list.append(networks[i])
+        data.append(curr_list)
+        
     return data
     
     
