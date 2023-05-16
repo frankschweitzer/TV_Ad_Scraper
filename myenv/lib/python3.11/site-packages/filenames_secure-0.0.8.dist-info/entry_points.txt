@@ -1,0 +1,3 @@
+[console_scripts]
+filenames_secure = filenames_secure:main
+

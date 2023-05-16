@@ -1,0 +1,109 @@
+Metadata-Version: 2.1
+Name: filenames-secure
+Version: 0.0.8
+Summary: Obscure filenames of mp4 files - away from being embarrassed by accidently opening family videos at work!
+Home-page: https://gitee.com/yanhuihang/filenames_secure
+Author: YAN Hui Hang, GDUFS
+Author-email: yanhuihang@126.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# filenames_secure
+
+Obscure filenames of mp4 files - away from being embarrassed by accidently opening family videos at work!
+
+Install with: `pip install filenames_secure`
+
+**Obscure filenames of mp4 files - away from being embarrassed by accidently opening family videos at work!**
+
+## Usage
+
+Simply `$ filenames_secure` to obscure and restore.
+
+## How it Works
+
+Filenames will be CRC-32'd, with restore record kept in an JSON file in the same folder.
+
+## Collisions
+
+If there are hash collisions, a different secure filename will be selected, then the collision check goes again, until there are no collisions - so there should be no risks of getting data lost - however, there are no warranties.
+
+## Functional / Stability
+
+If filename A is encoded into B this time, it will be encoded into B again next time, and forever - if there are no collisions that force a change.
+
+## Does CRC-32 collide oftenly?
+
+No. It rarely happens. If it occurs, I suggest going out, buying a lottery.
+
+## Code
+
+The code is simple:
+
+```python
+import os
+import abbrs
+
+def current_path():
+	p = os.path.realpath(__file__)
+	p = os.path.split(p)[0]
+	p = os.path.split(p)[-1]
+	return p
+
+PACKAGE_NAME = current_path()
+RC_FILENAME = f'{PACKAGE_NAME}.json'
+
+def make_dat(ls):
+	def is_mp4(x):
+		s = x.split('.')
+		return len(s) >= 2 and (s[-1] == 'mp4' or s[-2] == 'mp4')
+
+	def check_collision(d):
+		for i, v in enumerate(d):
+			for j in range(i + 1, len(d)):
+				if d[i][0] == d[j][0]:
+					return j
+
+	dat = [ [ abbrs.cool_hash(i), i ] for i in filter(is_mp4, ls) ]
+
+	while True:
+		i = check_collision(dat)
+		if i:
+			print(f'Repairing collision: {dat[i][0]} -> {dat[i][1]}')
+			dat[i][0] = abbrs.cool_hash(dat[i][0])
+		else:
+			break
+
+	return dat
+
+def restore():
+	dat = abbrs.load_json(RC_FILENAME)
+	for hash, filename in dat:
+		os.rename(hash, filename)
+	abbrs.suspend_file(RC_FILENAME)
+
+def secure():
+	dat = make_dat(os.listdir())
+	if len(dat) == 0:
+		print('MP4 files not found.')
+		return
+
+	abbrs.json_dump(RC_FILENAME, dat)
+	print(abbrs.table([ 'Hash', 'Filename' ], dat))
+	for hash, filename in dat:
+		os.rename(filename, hash)
+
+def main():
+	if os.path.exists(RC_FILENAME):
+		restore()
+	else:
+		secure()
+
+if __name__ == '__main__':
+	main()
+```
+
