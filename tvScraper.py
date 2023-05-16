@@ -15,17 +15,18 @@ import pandas as pd
 def main():
     network = "A&E"
     
+    desired_time = "12:15 PM"
+    
+    map, times_each_day, dates = show_data(network) # returns map from dates to map of shwos and times
+    
     # cleaning up dates
-    start_day = "Saturday, May 13"
-    end_day = "Saturday, May 27"
+    start_day = dates[0]
+    end_day = dates[-1]
     start_date = parser.parse(start_day).date()
     end_date = parser.parse(end_day).date()
     date_length = (end_date - start_date).days
-    
-    desired_time = "12:15 PM"
-    
-    map, times_each_day = show_data(network) # returns map from dates to map of shwos and times
     dates = list_dates(start_date, date_length) # list of dates from start to end
+    
     count = 0
     # printing the show at the desired time for all of the dates
     for date in dates:
@@ -159,7 +160,7 @@ def show_data(network):
         
         i += 1
     
-    return map, times_by_day
+    return map, times_by_day, days
 
 
 main()
