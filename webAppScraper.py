@@ -42,7 +42,7 @@ def upload():
   
 
 def main(filename):
-    networks = ["A&E", "AMC", "ANML", "BBCA", "BET", "BHER", "BRVO", "CMT", "E!", "FX", "FXM", "FYI", "GOLF", "HGTV", "HIST", "ID", "IFC", "LMN", "MLB", "NGC", "OWN", "PAR", "POP", "SYFY", "TLC", "TNT", "TRVL", "USA", "VH1", "VICE"]
+    networks = ["A&E", "AMC", "ANML", "BBCA", "BET", "BETHR", "BRVO", "CMT", "E!", "FX", "FXM", "FYI", "GOLF", "HGTV", "HIST", "ID", "IFC", "LMN", "MLB", "NGC", "OWN", "PAR", "POP", "SYFY", "TLC", "TNT", "TRVL", "USA", "VH1", "VICE"]
     # reading the dates and times needed
     data = read_file(filename)
     desired_map = {}
@@ -58,7 +58,7 @@ def main(filename):
     network_to_times = {}
     for network in networks:
         # need to make a loop, then this returns the map for each network and we can create another map from networks to this map
-        if network == "A&E" or network == "FX":
+        if network == "A&E" or network == "FX" or network == "BETHR" or network == "TNT":
             map, times_each_day, dates = show_data(network) # returns map from dates to map of shows and times
             network_to_times.update({network: times_each_day})
             network_to_map.update({network: map})
@@ -233,4 +233,5 @@ def show_data(network):
 
 
 if __name__ == '__main__':
-    app.run(debug=True) # debug = True is what is used to be
+    app.debug = True
+    app.run(host="0.0.0.0", port=5000) # host="0.0.0.0", port=5000 OR debug=True
