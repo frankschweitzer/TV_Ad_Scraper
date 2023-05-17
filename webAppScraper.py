@@ -1,5 +1,5 @@
 from fileinput import filename
-from flask import Flask, render_template, request, send_file, send_from_directory, abort
+from flask import Flask, render_template, request, send_file, send_from_directory, abort, session
 from bs4 import BeautifulSoup
 import openpyxl
 from openpyxl.styles import Font
@@ -22,10 +22,10 @@ def process():
     file = request.files['file']
     
     # Save the uploaded file
-    file.save('uploaded_file.xlsx')
+    file.save('uploaded_file1.xlsx')
     
     # Process the Excel file using your existing code
-    main('uploaded_file.xlsx')
+    main('uploaded_file1.xlsx')
     
     return 'Processing completed, download the finished excel sheet by moving to: https://fjs-tv-webscrape.herokuapp.com/upload'
 
@@ -174,7 +174,7 @@ def write_to_file(results):
         sheet[f"D{row_num}"] = result[2] # insert day
         sheet[f"E{row_num}"] = result[3] # insert show
         row_num += 1
-    workbook.save("tvDataWebApp.xlsx")
+    workbook.save("tvDataWebApp1.xlsx")
     
 
 # returns a map of all of the data given by day
