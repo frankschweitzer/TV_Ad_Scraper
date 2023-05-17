@@ -233,4 +233,4 @@ def show_data(network):
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000) # debug = True is what is used to be
+    app.run(debug=True) # debug = True is what is used to be
