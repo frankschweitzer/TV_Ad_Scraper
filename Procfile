@@ -1,0 +1,1 @@
+web: gunicorn webAppScraper:app
