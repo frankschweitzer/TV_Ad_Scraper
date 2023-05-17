@@ -1,3 +1,4 @@
+from types import NoneType
 from bs4 import BeautifulSoup
 import openpyxl
 from openpyxl.styles import Font
@@ -13,7 +14,8 @@ import pandas as pd
 # soup = BeautifulSoup(html_content, 'html.parser')
 
 def main():
-    networks = ["A&E", "AMC", "ANML", "BBCA", "BET", "BHER", "BRVO", "CMT", "E!", "FX", "FXM", "FYI", "GOLF", "HGTV", "HIST", "ID", "IFC", "LMN", "MLB", "NGC", "OWN", "PAR", "POP", "SYFY", "TLC", "TNT", "TRVL", "USA", "VH1", "VICE"]
+    networks = ["A&E", "AMC", "ANML", "BBCA", "BET", "BETHR", "BRAVO", "CMT", "E!", "FX", "FXM", "FYI", "GOLF", "HGTV", "HIST", "ID", "IFC", "LMN", "MLB", "NGC", "OWN", "PARAM", "POP", "SYFY", "TLC", "TNT", "TRV", "USA", "VH1", "VICE"]
+    networks_needed = ["A&E", "BETHR", "FX", "TNT"]
     # reading the dates and times needed
     name = "SampleRedBullData.xlsx"
     data = read_file(name)
@@ -25,15 +27,14 @@ def main():
         curr_data = [data[i][0], data[i][1]]
         curr_network_list.append(curr_data)
         desired_map[data[i][2]] = curr_network_list
-    
+        
     network_to_map = {}
     network_to_times = {}
-    for network in networks:
+    for network in networks_needed:
         # need to make a loop, then this returns the map for each network and we can create another map from networks to this map
-        if network == "A&E" or network == "FX":
-            map, times_each_day, dates = show_data(network) # returns map from dates to map of shows and times
-            network_to_times.update({network: times_each_day})
-            network_to_map.update({network: map})
+        map, times_each_day, dates = show_data(network) # returns map from dates to map of shows and times
+        network_to_times.update({network: times_each_day})
+        network_to_map.update({network: map})
     
     # cleaning up dates to use for indices
     start_day = dates[0]
@@ -48,18 +49,25 @@ def main():
     for network, shows in network_to_map.items():
         times = network_to_times.get(network) # times list
         desired_list = desired_map.get(network) # day will be at first position, time wanted at second
-        for curr in desired_list:
-            curr_date = parser.parse(curr[0]).date()
-            ind = (curr_date - start_date).days
-            show_title = locate_show(times, curr[1], curr[0], ind, shows)
-            current = []
-            date_object = datetime.strptime((curr[0]+", 2023"), "%A, %B %d, %Y")
-            formatted_date = date_object.strftime("%m/%d/%Y")
-            current.append(formatted_date)
-            current.append(curr[1])
-            current.append(network)
-            current.append(show_title)
-            results.append(current)
+        print(desired_list)    
+        if desired_list != None:
+            for curr in desired_list:
+                curr_date = parser.parse(curr[0]).date()
+                ind = (curr_date - start_date).days
+                show_title = locate_show(times, curr[1], curr[0], ind, shows)
+                if show_title==None:
+                    print(ind, curr_date)                        
+                    print(curr)
+                current = []
+                date_object = datetime.strptime((curr[0]+", 2023"), "%A, %B %d, %Y")
+                formatted_date = date_object.strftime("%m/%d/%Y")
+                current.append(formatted_date)
+                current.append(curr[1])                    
+                current.append(network)
+                current.append(show_title)
+                print("CURRENT: ", current)
+                print('\n')
+                results.append(current)
 
     # write all the shows and times to file
     results.pop(0)
@@ -138,14 +146,14 @@ def write_to_file(results):
     cell_E1.font = bold_font
     row_num = 2
     for result in results:
-        print(result)
+        # print(result)
         sheet[f"A{row_num}"] = "Red Bull"
         sheet[f"B{row_num}"] = result[0] # insert day
         sheet[f"C{row_num}"] = result[1] # insert time
         sheet[f"D{row_num}"] = result[2] # insert day
         sheet[f"E{row_num}"] = result[3] # insert show
         row_num += 1
-    workbook.save("tvData.xlsx")
+    workbook.save("tvDataMultipleNetworks.xlsx")
 
 # returns a map of all of the data given by day
 def show_data(network):

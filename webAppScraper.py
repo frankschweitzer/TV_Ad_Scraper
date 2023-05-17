@@ -27,7 +27,7 @@ def process():
     # Process the Excel file using your existing code
     main('uploaded_file.xlsx')
     
-    return 'Processing completed, move to upload page by replacing process with upload in the URL'
+    return 'Processing completed, download the finished excel sheet by moving to: https://fjs-tv-webscrape.herokuapp.com/upload'
 
 
 app.config["File Complete"] = "/Users/frankschweitzer/Documents/Emily Cadent/TV_Ad_Scraper"
