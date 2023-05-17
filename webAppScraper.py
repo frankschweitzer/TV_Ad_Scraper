@@ -43,6 +43,7 @@ def upload():
 
 def main(filename):
     networks = ["A&E", "AMC", "ANML", "BBCA", "BET", "BETHR", "BRVO", "CMT", "E!", "FX", "FXM", "FYI", "GOLF", "HGTV", "HIST", "ID", "IFC", "LMN", "MLB", "NGC", "OWN", "PAR", "POP", "SYFY", "TLC", "TNT", "TRVL", "USA", "VH1", "VICE"]
+    networks_needed = ["A&E", "BETHR", "FX", "TNT"]
     # reading the dates and times needed
     data = read_file(filename)
     desired_map = {}
@@ -56,12 +57,11 @@ def main(filename):
     
     network_to_map = {}
     network_to_times = {}
-    for network in networks:
+    for network in networks_needed:
         # need to make a loop, then this returns the map for each network and we can create another map from networks to this map
-        if network == "A&E" or network == "FX" or network == "BETHR" or network == "TNT":
-            map, times_each_day, dates = show_data(network) # returns map from dates to map of shows and times
-            network_to_times.update({network: times_each_day})
-            network_to_map.update({network: map})
+        map, times_each_day, dates = show_data(network) # returns map from dates to map of shows and times
+        network_to_times.update({network: times_each_day})
+        network_to_map.update({network: map})
     
     # cleaning up dates to use for indices
     start_day = dates[0]
