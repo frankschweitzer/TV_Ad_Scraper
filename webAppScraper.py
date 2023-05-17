@@ -31,12 +31,12 @@ def process():
 
 
 app.config["File Complete"] = "/Users/frankschweitzer/Documents/Emily Cadent/TV_Ad_Scraper"
-
+app.config['UPLOADS_FOLDER'] = 'uploads'  # or 'uploads'
 
 @app.route('/upload', methods=['GET'])
 def upload():
     try:
-        return send_from_directory(app.config["File Complete"], "tvDataWebApp.xlsx", as_attachment=True)
+        return send_from_directory(app.config["UPLOADS_FOLDER"], "tvDataWebApp.xlsx", as_attachment=True)
     except FileNotFoundError:
         abort(404)
   
