@@ -17,7 +17,7 @@ def main():
     networks = ["A&E", "AMC", "ANML", "BBCA", "BET", "BETHR", "BRAVO", "CMT", "E!", "FX", "FXM", "FYI", "GOLF", "HGTV", "HIST", "ID", "IFC", "LMN", "MLB", "NGC", "OWN", "PARAM", "POP", "SYFY", "TLC", "TNT", "TRV", "USA", "VH1", "VICE"]
     networks_needed = ["A&E", "BETHR", "FX", "TNT"]
     # reading the dates and times needed
-    name = "SampleRedBullData.xlsx"
+    name = "TestBook.xlsx"
     data = read_file(name)
     desired_map = {}
     
@@ -53,6 +53,7 @@ def main():
         if desired_list != None:
             for curr in desired_list:
                 curr_date = parser.parse(curr[0]).date()
+                print(curr_date, start_date)
                 ind = (curr_date - start_date).days
                 show_title = locate_show(times, curr[1], curr[0], ind, shows)
                 if show_title==None:
@@ -108,6 +109,7 @@ def list_dates(start, size):
 # returns the show that will be playing at the given time
 def locate_show(times, time_wanted, day, index, map):
     curr_map = map.get(day)
+    print("INDEX: ", index)
     curr_times = times[index]
     time_wanted = datetime.strptime(time_wanted, '%I:%M %p').time()
     
