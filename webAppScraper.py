@@ -7,6 +7,7 @@ from datetime import date, datetime, timedelta
 from dateutil import parser
 import pandas as pd
 import io
+import os
 
 app = Flask(__name__)
 
@@ -23,10 +24,10 @@ def process():
     file = request.files['file']
     
     # Save the uploaded file
-    file.save('uploaded_file1.xlsx')
+    file.save(file.filename)
     
     # Process the Excel file using your existing code
-    main('uploaded_file1.xlsx')
+    main(file)
     
     return 'Processing completed, download the finished excel sheet by moving to: https://fjs-tv-webscrape.herokuapp.com/upload'
 
@@ -175,7 +176,10 @@ def write_to_file(results):
         sheet[f"D{row_num}"] = result[2] # insert day
         sheet[f"E{row_num}"] = result[3] # insert show
         row_num += 1
-    workbook.save("tvDataWebApp1.xlsx")
+    folder_name = 'uploads'
+    file_name = 'tvDataWebApp.xlsx'
+    file_path = os.path.join(folder_name, file_name)
+    workbook.save(file_path)
     
 
 # returns a map of all of the data given by day
