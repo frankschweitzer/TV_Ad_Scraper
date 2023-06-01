@@ -54,6 +54,11 @@ def main():
                 curr_date = parser.parse(curr[0]).date()
                 ind = (curr_date - start_date).days
                 show_title = locate_show(times, curr[1], curr[0], ind, shows)
+                if show_title == None:
+                    previous_date = curr_date - timedelta(days=1)
+                    formatted_date = previous_date.strftime("%A, %B %d")
+                    ind = (previous_date-start_date).days
+                    show_title = locate_show(times, "11:59 PM", formatted_date, ind, shows)
                 current = []
                 date_object = datetime.strptime((curr[0]+", 2023"), "%A, %B %d, %Y")
                 formatted_date = date_object.strftime("%m/%d/%Y")
@@ -62,6 +67,7 @@ def main():
                 current.append(network)
                 current.append(show_title)
                 results.append(current)
+                print(current)
 
     # write all the shows and times to file
     results.pop(0)
