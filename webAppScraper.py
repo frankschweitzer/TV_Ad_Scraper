@@ -80,6 +80,7 @@ def main(filename):
         desired_list = desired_map.get(network) # day will be at first position, time wanted at second
         for curr in desired_list:
             curr_date = parser.parse(curr[0]).date()
+            print("DATE: ", curr_date)
             ind = (curr_date - start_date).days
             show_title = locate_show(times, curr[1], curr[0], ind, shows)
             current = []
@@ -130,7 +131,11 @@ def list_dates(start, size):
 
 # returns the show that will be playing at the given time
 def locate_show(times, time_wanted, day, index, map):
+    if day[-2] == "0":
+        day = day[:-2] + day[-1]
+    curr_map = {}
     curr_map = map.get(day)
+    print(curr_map)
     curr_times = times[index]
     time_wanted = datetime.strptime(time_wanted, '%I:%M %p').time()
     

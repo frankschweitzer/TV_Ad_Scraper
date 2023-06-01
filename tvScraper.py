@@ -15,9 +15,9 @@ import pandas as pd
 
 def main():
     networks = ["A&E", "AMC", "ANML", "BBCA", "BET", "BETHR", "BRAVO", "CMT", "E!", "FX", "FXM", "FYI", "GOLF", "HGTV", "HIST", "ID", "IFC", "LMN", "MLB", "NGC", "OWN", "PARAM", "POP", "SYFY", "TLC", "TNT", "TRV", "USA", "VH1", "VICE"]
-    networks_needed = ["A&E", "BETHR", "FX", "TNT"]
+    networks_needed = ["BETHR", "GOLF", "MLBN", "NTGEO", "PARAM", "POP", "SYFY", "TLC", "TRV", "VH1", "VICE"]
     # reading the dates and times needed
-    name = "TestBook.xlsx"
+    name = "REALRUN.xlsx"
     data = read_file(name)
     desired_map = {}
     
@@ -48,17 +48,12 @@ def main():
     results = [[]]
     for network, shows in network_to_map.items():
         times = network_to_times.get(network) # times list
-        desired_list = desired_map.get(network) # day will be at first position, time wanted at second
-        print(desired_list)    
+        desired_list = desired_map.get(network) # day will be at first position, time wanted at second 
         if desired_list != None:
             for curr in desired_list:
                 curr_date = parser.parse(curr[0]).date()
-                print(curr_date, start_date)
                 ind = (curr_date - start_date).days
                 show_title = locate_show(times, curr[1], curr[0], ind, shows)
-                if show_title==None:
-                    print(ind, curr_date)                        
-                    print(curr)
                 current = []
                 date_object = datetime.strptime((curr[0]+", 2023"), "%A, %B %d, %Y")
                 formatted_date = date_object.strftime("%m/%d/%Y")
@@ -66,8 +61,6 @@ def main():
                 current.append(curr[1])                    
                 current.append(network)
                 current.append(show_title)
-                print("CURRENT: ", current)
-                print('\n')
                 results.append(current)
 
     # write all the shows and times to file
@@ -108,8 +101,10 @@ def list_dates(start, size):
 
 # returns the show that will be playing at the given time
 def locate_show(times, time_wanted, day, index, map):
+    if day[-2] == "0":
+        day = day[:-2] + day[-1]
+    curr_map = {}
     curr_map = map.get(day)
-    print("INDEX: ", index)
     curr_times = times[index]
     time_wanted = datetime.strptime(time_wanted, '%I:%M %p').time()
     
@@ -165,7 +160,7 @@ def show_data(network):
 
     # blocking off data by day
     dates = soup.find_all(class_="date")
-
+            
     days = []
     shows_by_day = [[]]
     times_by_day = [[]]
