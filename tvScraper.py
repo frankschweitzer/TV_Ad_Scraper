@@ -14,11 +14,12 @@ import pandas as pd
 # soup = BeautifulSoup(html_content, 'html.parser')
 
 def main():
-    networks = ["A&E", "AMC", "ANML", "BBCA", "BET", "BETHR", "BRAVO", "CMT", "E!", "FX", "FXM", "FYI", "GOLF", "HGTV", "HIST", "ID", "IFC", "LMN", "MLB", "NGC", "OWN", "PARAM", "POP", "SYFY", "TLC", "TNT", "TRV", "USA", "VH1", "VICE"]
-    networks_needed = ["BETHR", "GOLF", "MLBN", "NTGEO", "PARAM", "POP", "SYFY", "TLC", "TRV", "VH1", "VICE"]
+    networks = ["A&E", "AMC", "ANML", "BBCA", "BET", "BETHR", "BRAVO", "CMT", "E!", "FX", "FXM", "FYI", "GOLF", "HGTV", "HIST", "ID", "IFC", "LMN", "MLB", "NGC", "NTGEO", "OWN", "PARAM", "POP", "SYFY", "TLC", "TNT", "TRV", "USA", "VH1", "VICE"]
+    # networks_needed = ["BETHR", "GOLF", "MLBN", "NTGEO", "PARAM", "POP", "SYFY", "TLC", "TRV", "VH1", "VICE"]
     # reading the dates and times needed
-    name = "REALRUN.xlsx"
-    data = read_file(name)
+    name = "june9.xlsx"
+    data, networks_needed = read_file(name)
+    print(networks_needed)
     desired_map = {}
     
     for i in range(len(data)):
@@ -80,6 +81,7 @@ def read_file(name):
     dates = df['Date'].tolist()
     times = df['Scheduled Time'].tolist()
     networks = df['Network'].tolist()
+    unique_networks = list(set(networks))
     
     data = []
     for i in range(len(dates)):
@@ -93,7 +95,7 @@ def read_file(name):
         curr_list.append(networks[i])
         data.append(curr_list)
         
-    return data
+    return data, unique_networks
     
 # returns a list of the dates that the html sheets cover
 def list_dates(start, size):

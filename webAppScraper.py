@@ -45,9 +45,9 @@ def upload():
 
 def main(filename):
     networks = ["A&E", "AMC", "ANML", "BBCA", "BET", "BETHR", "BRVO", "CMT", "E!", "FX", "FXM", "FYI", "GOLF", "HGTV", "HIST", "ID", "IFC", "LMN", "MLB", "NGC", "OWN", "PAR", "POP", "SYFY", "TLC", "TNT", "TRVL", "USA", "VH1", "VICE"]
-    networks_needed = ["BETHR", "GOLF", "MLBN", "NTGEO", "PARAM", "POP", "SYFY", "TLC", "TRV", "VH1", "VICE"]
+    # networks_needed = ["BETHR", "GOLF", "MLBN", "NTGEO", "PARAM", "POP", "SYFY", "TLC", "TRV", "VH1", "VICE"]
     # reading the dates and times needed
-    data = read_file(filename)
+    data, networks_needed = read_file(filename)
     desired_map = {}
     
     for i in range(len(data)):
@@ -100,7 +100,7 @@ def main(filename):
     results.pop(0)
     output = write_to_file(results)
     return output
-    
+
 
 # extracting data needed from excel sheet
 def read_file(name):
@@ -108,6 +108,7 @@ def read_file(name):
     dates = df['Date'].tolist()
     times = df['Scheduled Time'].tolist()
     networks = df['Network'].tolist()
+    unique_networks = list(set(networks))
     
     data = []
     for i in range(len(dates)):
@@ -121,7 +122,7 @@ def read_file(name):
         curr_list.append(networks[i])
         data.append(curr_list)
         
-    return data
+    return data, unique_networks
     
 # returns a list of the dates that the html sheets cover
 def list_dates(start, size):
