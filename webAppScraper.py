@@ -44,7 +44,7 @@ def upload():
   
 
 def main(filename):
-    networks = ["A&E", "AMC", "ANML", "BBCA", "BET", "BETHR", "BRVO", "CMT", "E!", "FX", "FXM", "FYI", "GOLF", "HGTV", "HIST", "ID", "IFC", "LMN", "MLB", "NGC", "OWN", "PAR", "POP", "SYFY", "TLC", "TNT", "TRVL", "USA", "VH1", "VICE"]
+    networks = ["A&E", "AMC", "ANML", "BBCA", "BET", "BETHR", "BRVO", "CMT", "E!", "FX", "FXM", "FYI", "GOLF", "HGTV", "HIST", "ID", "IFC", "LMN", "MLB", "NGC", "NTGEO", "OWN", "PARAM", "POP", "SYFY", "TLC", "TNT", "TRV", "USA", "VH1", "VICE"]
     # networks_needed = ["BETHR", "GOLF", "MLBN", "NTGEO", "PARAM", "POP", "SYFY", "TLC", "TRV", "VH1", "VICE"]
     # reading the dates and times needed
     data, networks_needed = read_file(filename)
