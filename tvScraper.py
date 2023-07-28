@@ -17,7 +17,7 @@ def main():
     networks = ["A&E", "AMC", "ANML", "BBCA", "BET", "BETHR", "BRAVO", "CMT", "E!", "FX", "FXM", "FYI", "GOLF", "HGTV", "HIST", "ID", "IFC", "LMN", "MLBN", "NGC", "NTGEO", "OWN", "PARAM", "POP", "SYFY", "TLC", "TNT", "TRV", "USA", "VH1", "VICE"]
     # networks_needed = ["BETHR", "GOLF", "MLBN", "NTGEO", "PARAM", "POP", "SYFY", "TLC", "TRV", "VH1", "VICE"]
     # reading the dates and times needed
-    name = "redbull-73.xlsx"
+    name = "RB_Week_731.xlsx"
     data, networks_needed = read_file(name)
     print(networks_needed)
     desired_map = {}
