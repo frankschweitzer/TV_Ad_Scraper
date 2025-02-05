@@ -1,5 +1,3 @@
-I retrieved some information from the repository, but I could not gather everything needed. Here is a preliminary README file based on the available data:
-
 ---
 
 # TV Ad Scraper
